@@ -1,0 +1,227 @@
+
+<html>
+<head>
+<title>Home</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />        
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+</head>
+<style> 
+
+   div.container {
+     width: 100%;
+     border-bottom: 5px solid rgb(57, 20, 75);
+   }
+   
+.div1 {
+  position: fixed;
+  font-size: 16px;
+  bottom: 720px;
+  right: 800px;
+  width: 300px;
+  height: 30px;
+  border: 2px solid rgb(7, 7, 7);
+ 
+}
+
+.div2 {
+    position: fixed;
+  font-size: 16px;
+  bottom: 720px;
+  right: 400px;
+  width: 300px;
+  height: 30px;
+  border: 2px solid rgb(7, 7, 7);
+}
+.loader {
+  border: 20px solid #f3f3f3;
+  position:absolute;
+  left:45%;
+  bottom: 45%;
+  border-radius: 50%;
+  border-top: 20px solid purple;
+  border-bottom: 20px solid green;
+  border-right: 20px solid red;
+  width: 150px;
+  height: 150px;
+  animation: spin 2s linear infinite;
+}
+@keyframes spin{
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+   </style>
+<body style="background-color:rgba(151, 118, 144, 0.329);">
+    <div class="loader"></div>
+<p><h1 align ="center"  style="color:rgb(78, 42, 42);">Grapes Leaf Disease Detection</h1></p>
+
+<h4 align="center"  style="color:rgb(78, 29, 119);"> College Name: </h4>
+<h4 align="center"  style="color:rgb(78, 29, 119);"> Designed by: </h4>
+
+<div class="container">
+    <h4 align="left">  Select a file to upload</h4>
+    
+    <p>
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            <ul>
+            {% for message in messages %}
+              <li>{{ message }}</li>
+            {% endfor %}
+            </ul>
+          {% endif %}
+        {% endwith %}
+    </p>
+    
+    <form method="post" action="/" enctype="multipart/form-data">
+        <dl>
+            <p>
+                <input type="file" name="file" class="form-control" autocomplete="off" required>
+            </p>
+        </dl>
+            <input type="submit"  value="Display Image" class="btn btn-info">
+        </p>
+        
+    </form>
+    <p>
+        {% if step == 0 %}
+       
+            <div>
+                <img src="{{ url_for('display_img', filename=filename) }}">
+            </div>
+    
+        {% endif %}
+        </p>
+</div>
+<br>
+
+   
+
+<div class="container">
+   
+    <h4 align="left"> Preprocessing of Image</h4>
+    
+    <form method="post" action="/preprocessing" enctype="multipart/form-data">
+
+    <p>
+        <input type="submit" name="Preprocess" value="Preprocess" class="btn btn-info">
+    </p>
+    </form>
+    <p>
+        {% if step == 1 %}
+       
+    
+            <div>
+                <img src="{{ url_for('display_img', filename=filename) }}">
+            </div>
+    
+        {% endif %}
+    </p>
+    
+</div>
+
+<br>
+
+<div class="container">
+    <div class="loader"></div>
+    <h4 align="left"> Predict Disease</h4>
+       
+    <form method="post" action="/leaf_predict" enctype="multipart/form-data">
+    
+    <p>
+        <input type="submit" name="Predict_desease" value="Predict" class="btn btn-info">
+    </p>
+    </form>
+    
+    <p>
+        
+        {% if step == 2 %}
+        
+        <div>
+            <img src="{{ url_for('display_img', filename=filename) }}">
+        </div>
+        <p>
+            <h3 align="center"> Detected Disease name is : {{ leaf_status }}</h3>
+        </p>
+        {% endif %}
+    </p>
+</div>
+<br>
+
+<div class="container">
+    
+    <h4 align="left"> Normalized Difference Vegetation Index</h4>
+       
+    <form method="post" action="/veg_index" enctype="multipart/form-data">
+
+    <p>
+        <input type="submit" name="v_index" value='veg_index/NDVI' class="btn btn-info">
+    </p>
+    </form>
+    <p>
+        {% if step == 3 %}
+    
+        <div>
+            <img src="{{ url_for('display_img', filename=filename) }}"  width="460" height="345">
+        </div>
+     
+        {% endif %}
+    </p>
+</div>
+
+<br>
+
+<div class="container">
+    
+    <h4 align="left">Image Segmentation</h4>
+       
+    <form method="post" action="/segmentation" enctype="multipart/form-data">
+
+    <p>
+        <input type="submit" name="segmentation" value='Segmentation' class="btn btn-info">
+    </p>
+    </form>
+        <p>
+        {% if step == 4 %}
+    
+        <div>
+            <img src="{{ url_for('display_img', filename=filename) }}"  width="256" height="256" >
+        </div>
+        {% endif %}
+        <div align ="center" class="div1">Affected region: {{ percent }}   %</div>
+        
+        
+        <div align ="center" class="div2">Accuraccy {{ accuracy }} %</div>       
+            
+
+</div>
+<br>
+<br>
+<br>
+
+        <form method="post" action="/" enctype="multipart/form-data">
+        
+         <p align="center">
+        <input type="submit" name="reset" value='Reset' class="btn btn-info">
+    </p>
+    </form>
+</body>
+<script>
+    $(document).ready(function() {
+    //Preloader
+    preloaderFadeOutTime = 500;
+    function hidePreloader() {
+    var preloader = $('.loader');
+    preloader.fadeOut(preloaderFadeOutTime);
+    }
+    hidePreloader();
+    });
+    </script>
+</html>
