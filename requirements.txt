@@ -1,7 +1,7 @@
 
 Flask
 Jinja2
-kerassing
+keras
 kiwisolver
 matplotlib
 matplotlib-inline
