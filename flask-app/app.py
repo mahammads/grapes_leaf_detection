@@ -27,7 +27,7 @@ app = Flask(__name__)
 
 Root_path = (Path(os.getcwd()))
 
-UPLOAD_FOLDER = 'app/static/uploads/'
+UPLOAD_FOLDER = 'flask-app/static/uploads/'
 global image
 app.secret_key = "secret key"
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
@@ -146,4 +146,4 @@ def segment():
 
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=5000, debug=True, threaded=True)
+    app.run(host='0.0.0.0', port=5000, threaded=True)

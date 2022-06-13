@@ -18,7 +18,7 @@ def predict(img_path):
 
     categories=["Black_rot","Esca_(Black_Measles)","Healthy","Leaf_blight_(Isariopsis_Leaf_Spot)"]
 
-    new_model=tf.keras.models.load_model("app/leaf_disease_coloured.h5")
+    new_model=tf.keras.models.load_model("flask-app/leaf_disease_coloured.h5")
 
 
 

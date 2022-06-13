@@ -4,7 +4,7 @@ from matplotlib import pyplot as plt
 from pathlib import Path
 import os
 
-gray_path = Path(os.getcwd()+"/app/static/uploads/")
+gray_path = Path(os.getcwd()+"/flask-app/static/uploads/")
 d=  os.listdir(gray_path)
 img=cv2.imread(os.path.join(gray_path,d[0]))
 
