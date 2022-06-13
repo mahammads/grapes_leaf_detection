@@ -90,7 +90,7 @@ def upload_image():
 
 @app.route('/display/<filename>',methods = ["POST","GET"])
 def display_img(filename):
-    # print('111 display_image filename: ' + filename)
+    # print('111 display_image filename: ' + filename)``
     return redirect(url_for('static',filename='uploads/' + filename), code=301)
 
 
